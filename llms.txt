@@ -12,7 +12,7 @@ Positioning: operational simplicity, total cost of ownership, and trust. Not fea
 - [Editions](https://talusgis.com/editions/): Talus Community vs Talus+; stop paying and keep everything installed
 - [Compatibility](https://talusgis.com/compatibility/): ArcGIS Pro, QGIS, QField, Google Earth, GeoLibre, identity providers, geocoders, backups, standards; what does not work is named
 - [How it works](https://talusgis.com/how-it-works/): one page per capability — what it does, what you need, what it deliberately does not do
-- [Who it's for](https://talusgis.com/for/): one page each for park districts, fire protection districts, rural counties, conservancies and non-profits, consultants and small GIS firms, and organizations outside the US — what Talus does for each, what you need, what it deliberately does not do
+- [Who it's for](https://talusgis.com/for/): organizations that need a working GIS with field collection, web maps, and sharing, and have no GIS department to run one.
 - [FAQ](https://talusgis.com/faq/): editing and versioning, security, supply chain, AI, deployment and scale, operations, licensing
 - [Request a quote](https://talusgis.com/quote/): what a one-page Talus+ quote needs
 - [Contact](https://talusgis.com/contact/): info@ (sales and general), support@, security@ — each one reaching a person
