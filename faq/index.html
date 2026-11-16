@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FAQ — Talus GIS</title>
-  <meta name="description" content="Honest answers to the questions evaluators and new deployments ask most about Talus GIS. Where Talus has a gap, it is named here.">
+  <title>FAQ: leaving ArcGIS, field work, backups — Talus GIS</title>
+  <meta name="description" content="Honest answers to what evaluators ask: moving from ArcGIS, field collection, editing, backups, public maps, what leaves your server, and the AGPL.">
   <link rel="canonical" href="https://talusgis.com/faq/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="FAQ — Talus GIS">
-  <meta property="og:description" content="Editing and versioning, security, supply chain, AI, deployment and scale, operations, licensing.">
+  <meta property="og:title" content="FAQ: leaving ArcGIS, field work, backups — Talus GIS">
+  <meta property="og:description" content="Honest answers to what evaluators ask: moving from ArcGIS, field collection, editing, backups, public maps, what leaves your server, and the AGPL.">
   <meta property="og:url" content="https://talusgis.com/faq/">
   <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
   <meta property="og:site_name" content="Talus GIS">
@@ -64,7 +64,7 @@
     <h3>Where is reconcile-and-post, or branch versioning?</h3>
     <p>Deliberately absent. The needs versioning actually serves in most shops, multi-editor safety and accountability, are covered by real transactions, optimistic concurrency, and the audit trail. Isolated long-running edit sessions are a heavy minority need Talus does not carry infrastructure for.</p>
 
-    <h3>Field collection?</h3>
+    <h3>Field collection? Is there a Field Maps or Survey123 alternative?</h3>
     <p>QField, free and open source, works today through the standard doors: collection, photos, and a documented round-trip recipe in <a href="https://github.com/TalusGIS/talus/blob/main/docs/connect-desktop.md">docs/connect-desktop.md</a>. That path stays in Talus Community and is the proven baseline, not a placeholder. Talus Field, a web-first field app with offline packs, is the Talus+ module.</p>
 
     <h2 id="security">Security</h2>
@@ -84,7 +84,7 @@
     <p>There is also no untrusted-contributor path. Talus is maintained in-house by design, so outside pull requests are declined automatically, and the most common real-world open-source supply-chain compromise, a hijacked contributor, has no ingress.</p>
     <p>The honest remaining gap: release images are not yet cryptographically signed with Sigstore or SLSA provenance. That is on the roadmap. Until then the SBOM, the digest-pinned compose file, and the readable source are the verification surface.</p>
 
-    <h3>Does it phone home?</h3>
+    <h3>Does it phone home? Where does our data go?</h3>
     <p id="phones-home">No. There is no telemetry, no update checker, and no license server. A deployment <em>can</em> reach the internet for a short list of things, including certificate renewal, address search, streamed map backgrounds, an off-host backup target, and in Talus+ the AI assists. Two of these are on when you install, because a new portal is more useful with them: a public address search, and street maps that each viewer's browser fetches straight from the publisher, OpenStreetMap by default. An administrator can switch either off, and the rest exist only if you configure them. With those two off and nothing else configured, the server makes no outbound connection and no viewer's browser is sent anywhere but your portal, which you can confirm at your own network layer. The security overview lists them one by one.</p>
 
     <h2 id="ai-built">“Talus is AI-built. Isn't that a risk?”</h2>
@@ -95,11 +95,17 @@
     <h3>What does it take to run?</h3>
     <p>One host with Docker. One script, <code>scripts/talus-setup.sh</code>, installs the whole stack: portal, database, identity, authorization, tiles, and the TLS edge, where the closed alternative needs several separately installed components. A modest machine of four vCPUs and 8 GB serves a small organization comfortably. Measured at county scale on a 300,000-parcel layer, four vCPUs carry about fifteen simultaneous requests, roughly 150 named users at typical duty cycles. Adding CPU raises that ceiling. Adding RAM does not.</p>
 
+    <h3>Are there credits or per-user fees?</h3>
+    <p>No. Nothing in Talus Community is metered, and there are no user licenses to buy: add the accounts you need. Talus+ is one flat price per deployment, never counted by users or seats. What sets the practical limit is your hardware: on a 300,000-parcel county layer, four vCPUs carry about fifteen simultaneous requests, roughly 150 named users at typical duty cycles, and adding CPU raises that ceiling. The one allowance anywhere is the Talus+ AI assists, which pause at their ceiling and never bill on their own.</p>
+
     <h3>Do we need Kubernetes?</h3>
     <p>No. The graceful ladder is one host, then externalize the database and storage to managed services if you outgrow it, then orchestration only if you genuinely reach that scale. Talus does not push you up the ladder.</p>
 
     <h2 id="operations">Operations: “does it need babysitting?”</h2>
     <p>Talus keeps itself tidy. A built-in scheduler expires ephemeral cruft such as transient keys and orphaned uploads on thresholds you control, and structurally cannot touch your layers, features, or audit log. That is a design guarantee, not a setting. Backups run on a schedule with retention floors, an admin-settable off-host destination with a connection-test button, optional encryption, and written restore procedures in <a href="https://github.com/TalusGIS/talus/blob/main/docs/dr-restore-runbook.md">docs/dr-restore-runbook.md</a>, with a restore drill you can run on your own server. A maintenance panel shows what ran and what it freed. There is no separate maintenance utility to learn.</p>
+
+    <h3>Will an upgrade break our maps or dashboards?</h3>
+    <p>An upgrade happens when you run it, never on its own. The upgrade runbook starts with a backup that must visibly complete, each release is rehearsed on a test server before it is published, and the restore from that backup is rehearsed too.</p>
 
     <h2 id="capabilities">Common capability questions</h2>
 
@@ -130,7 +136,7 @@
     <h3>Can I keep my token-secured Esri geocoder? Does adding it log me into ArcGIS?</h3>
     <p>Yes, and no. Add it as an ArcGIS GeocodeServer locator and paste a token you generated in your own ArcGIS Online or Location Platform organization. There is no ArcGIS sign-in and no OAuth prompt. The token is stored write-only and encrypted at rest, never echoed back, and validated with a Test button. Talus never brokers an Esri sign-in and never sees your Esri password. For credit-consuming services, batch geocoding shows a credit estimate and requires an explicit acknowledgement before spending. Zero-credit alternatives ship in the box: an internal geocoder over your own address points, or self-hosted Nominatim.</p>
 
-    <h3>Dashboards, scheduled reports, story maps?</h3>
+    <h3>Dashboards and story maps, like ArcGIS Dashboards and StoryMaps?</h3>
     <p>Yes. All three are Talus+ modules: operational dashboards with indicators, charts, and filtered map widgets with cross-filtering; scheduled and per-feature PDF reports with delivery to email or webhook targets; and story maps. The zero-build free path for per-feature documents is QGIS Atlas over the OGC door, a power-user recipe rather than a placeholder.</p>
 
     <h3 id="geolibre">Can we use GeoLibre with Talus?</h3>
@@ -139,6 +145,9 @@
 
     <h3>We're moving data out of ArcGIS, or anything else, into Talus. What should we do first?</h3>
     <p>Back it up where it is. Export the geodatabase or the service, keep the copy somewhere Talus cannot touch, and leave the original system running until you have checked what came across. Imports are copies and the source is never modified, but the original is your way back.</p>
+
+    <h3>Can we get all our data out, photos included?</h3>
+    <p>It never leaves. Your layers live in the PostgreSQL database on your own server, and photos and attachments are stored beside them as managed files. Scheduled backups take every database plus those files, optionally encrypted to a key only you hold, to a destination you choose, and the restore is rehearsed. ArcGIS Pro and QGIS read every layer through the standard doors, so you can save a copy in any format they write, and datasets you publish download as CSV, GeoJSON, Shapefile, or GeoPackage.</p>
 
     <h3>I'm importing a CSV. What happens to my ZIP codes, FIPS codes, and parcel IDs?</h3>
     <p>Leading zeros are preserved. A CSV carries no type information, so Talus reads the header and the first 200 rows and picks a type per column. A value with a leading zero before more digits is treated as an identifier, not a number, so the whole column comes in as text and the value is stored exactly as written. Dates and true/false are not guessed; they arrive as text. If you want particular types, build the layer's fields first and import into that existing layer rather than letting the import create one.</p>
