@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ — Talus GIS</title>
+  <meta name="description" content="Honest answers to the questions evaluators and new deployments ask most about Talus GIS. Where Talus has a gap, it is named here.">
+  <link rel="canonical" href="https://talusgis.com/faq/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FAQ — Talus GIS">
+  <meta property="og:description" content="Editing and versioning, security, supply chain, AI, deployment and scale, operations, licensing.">
+  <meta property="og:url" content="https://talusgis.com/faq/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/">How it works</a></li>
+      <li><a href="/faq/" aria-current="page">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Frequently asked</span>
+    <h1>Questions evaluators actually ask</h1>
+    <p class="lede">Honest answers. Where Talus has a gap, it is named here, on purpose. A version of this document ships in the repository as <a href="https://github.com/TalusGIS/talus/blob/main/docs/faq.md">docs/faq.md</a>.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap qa">
+
+    <h2 id="editing">Editing, concurrency, and “do I need versioning?”</h2>
+
+    <h3>Does Talus track who edited what?</h3>
+    <p>Yes, comprehensively. Every edit stamps who and when, and audit triggers keep a full change history with the actor's identity, including edits made from ArcGIS Pro or QGIS through the interop doors. This is more than last-editor fields. It is a queryable history.</p>
+
+    <h3>Can two people edit at the same time?</h3>
+    <p>Yes, natively. Talus stores data in PostgreSQL, which is fully transactional. Two editors on different features never conflict, with no check-out, no versioning apparatus, and nothing to reconcile.</p>
+
+    <h3>What if two people edit the same feature?</h3>
+    <p>Talus uses optimistic concurrency. Every feature carries a version, every save asserts it, and a save against a stale version is refused with a conflict rather than silently overwriting. The client refreshes and the second editor sees the first editor's change before making their own.</p>
+
+    <h3>Where is reconcile-and-post, or branch versioning?</h3>
+    <p>Deliberately absent. The needs versioning actually serves in most shops, multi-editor safety and accountability, are covered by real transactions, optimistic concurrency, and the audit trail. Isolated long-running edit sessions are a heavy minority need Talus does not carry infrastructure for.</p>
+
+    <h3>Field collection?</h3>
+    <p>QField, free and open source, works today through the standard doors: collection, photos, and a documented round-trip recipe in <a href="https://github.com/TalusGIS/talus/blob/main/docs/connect-desktop.md">docs/connect-desktop.md</a>. That path stays in Talus Community and is the proven baseline, not a placeholder. Talus Field, a web-first field app with offline packs, is the Talus+ module.</p>
+
+    <h2 id="security">Security</h2>
+
+    <h3>Is it secure?</h3>
+    <p>Secure by default: standards-based sign-in through Keycloak (OIDC, OAuth2, SAML, with SSO and local accounts side by side), fine-grained fail-closed authorization through OpenFGA (an authorization error denies, never allows), full write audit with actor attribution, and a negative-test suite you can run against your own install that proves deny-by-default rather than promising it. The buyer-facing overview is <a href="https://github.com/TalusGIS/talus/blob/main/docs/security-overview.md">docs/security-overview.md</a>.</p>
+
+    <h3>Certifications?</h3>
+    <p>None yet. No SOC 2, StateRAMP, FedRAMP, or CJIS. Talus is confident about the architecture and honest about the certificates it has not earned. Do not use it to satisfy a compliance checkbox it cannot back.</p>
+
+    <h3>Can Talus maps and apps be public?</h3>
+    <p>Yes, if an administrator deliberately turns public sharing on. Every fresh install starts with it off, and every change to that setting is recorded in the administrative audit log. Once it is on, only the items explicitly shared to Public Access are visible anonymously: web maps, layers, imagery, and the Open Data portal.</p>
+    <p>The Open Data portal is a curated catalog of the datasets you choose to publish. Visitors browse and download them without an account, in CSV, GeoJSON, Shapefile, or GeoPackage, and a DCAT-US feed lets state and federal open-data harvesters pick them up automatically. Every published dataset carries ISO 19115 metadata describing what it is, who publishes it, and how current it is, and a completeness gate keeps a dataset off the portal until that metadata is filled in. What the public sees is described, attributed, and current, and turning public sharing off stops serving all of it immediately.</p>
+
+    <h2 id="supply-chain">“It's open source off GitHub. How do I know it's safe to install?”</h2>
+    <p>A proprietary product asks you to trust it. Open source lets you verify it. The install is a script you can read before you run it, and a <code>docker compose</code> file: no <code>curl | bash</code>, and nothing fetched from the internet but the container images the compose file names. Every change is gated by CI security scanners (static analysis, secret scanning, and dependency and configuration scanning) that fail on high and critical findings that have a fix. Every release ships with a CycloneDX software bill of materials for source and image, and every container image in the shipped compose file is pinned by content digest. Dependencies are kept current automatically in the private repository where Talus is developed, and the third-party CI action the published workflows use is pinned by commit hash.</p>
+    <p>There is also no untrusted-contributor path. Talus is maintained in-house by design, so outside pull requests are declined automatically, and the most common real-world open-source supply-chain compromise, a hijacked contributor, has no ingress.</p>
+    <p>The honest remaining gap: release images are not yet cryptographically signed with Sigstore or SLSA provenance. That is on the roadmap. Until then the SBOM, the digest-pinned compose file, and the readable source are the verification surface.</p>
+
+    <h3>Does it phone home?</h3>
+    <p id="phones-home">No. There is no telemetry, no update checker, and no license server. A deployment <em>can</em> reach the internet for a short list of things, including certificate renewal, address search, streamed map backgrounds, an off-host backup target, and in Talus+ the AI assists. Two of these are on when you install, because a new portal is more useful with them: a public address search, and street maps that each viewer's browser fetches straight from the publisher, OpenStreetMap by default. An administrator can switch either off, and the rest exist only if you configure them. With those two off and nothing else configured, the server makes no outbound connection and no viewer's browser is sent anywhere but your portal, which you can confirm at your own network layer. The security overview lists them one by one.</p>
+
+    <h2 id="ai-built">“Talus is AI-built. Isn't that a risk?”</h2>
+    <p>Talus is developed with AI as the implementer, directed by a team with over 30 years of GIS experience under a decision-before-code discipline: every substantive capability gets a written design decision before implementation, a security review, and negative tests for every new data path. “AI slop” is un-owned code. This is the inverse: the judgment is front-loaded and human, the implementation is reviewed, and the verification suite in the repository is the discipline's public face. Judge the result by the running system, which is fail-closed, audited, and testable on your own install. The full account is on <a href="/how-its-built/">How it's built</a>.</p>
+
+    <h2 id="deployment">Deployment and scale</h2>
+
+    <h3>What does it take to run?</h3>
+    <p>One host with Docker. One script, <code>scripts/talus-setup.sh</code>, installs the whole stack: portal, database, identity, authorization, tiles, and the TLS edge, where the closed alternative needs several separately installed components. A modest machine of four vCPUs and 8 GB serves a small organization comfortably. Measured at county scale on a 300,000-parcel layer, four vCPUs carry about fifteen simultaneous requests, roughly 150 named users at typical duty cycles. Adding CPU raises that ceiling. Adding RAM does not.</p>
+
+    <h3>Do we need Kubernetes?</h3>
+    <p>No. The graceful ladder is one host, then externalize the database and storage to managed services if you outgrow it, then orchestration only if you genuinely reach that scale. Talus does not push you up the ladder.</p>
+
+    <h2 id="operations">Operations: “does it need babysitting?”</h2>
+    <p>Talus keeps itself tidy. A built-in scheduler expires ephemeral cruft such as transient keys and orphaned uploads on thresholds you control, and structurally cannot touch your layers, features, or audit log. That is a design guarantee, not a setting. Backups run on a schedule with retention floors, an admin-settable off-host destination with a connection-test button, optional encryption, and written restore procedures in <a href="https://github.com/TalusGIS/talus/blob/main/docs/dr-restore-runbook.md">docs/dr-restore-runbook.md</a>, with a restore drill you can run on your own server. A maintenance panel shows what ran and what it freed. There is no separate maintenance utility to learn.</p>
+
+    <h2 id="capabilities">Common capability questions</h2>
+
+    <h3>Custom basemaps and aerial imagery?</h3>
+    <p>Yes. A new portal draws an OpenStreetMap street map from its first map, streamed from the publisher with nothing to set up. For offline use, or to keep viewers' browsers off the internet, download your area once and the Light, Dark and Gray street maps draw from your own server. No metering either way. For imagery, a GeoTIFF, JPEG 2000, or ERDAS IMG raster converts to cloud-optimized GeoTIFF and serves as tiles, fully air-gapped.</p>
+
+    <h3>Can I take a map into the field on my phone? Does it open in Avenza Maps?</h3>
+    <p>Yes. The map's <strong>Export → Print</strong> tab produces a one-page PDF (title, legend, scale bar, north arrow) that is georeferenced in the ISO 32000 geospatial-PDF form Avenza Maps, QGIS, and Acrobat read, so it opens as a map, not a picture: your position shows on it in the field, and QGIS places it over the layers it was printed from. It is a single rendered page, not a map book or a layered PDF; a tilted view exports as seen but is not georeferenced, and the Print tab says so.</p>
+
+    <h3>Forms and validation?</h3>
+    <p>Yes. Owner-defined fields, reusable coded-value domains, constraint rules and defaults, all on PostgreSQL primitives. No proprietary expression language.</p>
+
+    <h3>Scripting and automation?</h3>
+    <p>A documented <code>/api/v1</code> with scoped service-account tokens, described in <a href="https://github.com/TalusGIS/talus/blob/main/docs/api-guide.md">docs/api-guide.md</a>. Script from your own environment, on your own compute.</p>
+
+    <h3>Public input or crowdsourcing?</h3>
+    <p>Not offered, and anonymous public writes are deliberately not accepted.</p>
+
+    <h3>3D, routing, Utility Network, Parcel Fabric, heavy imagery analytics?</h3>
+    <p>Non-goals. Talus deliberately sheds the exotic 20%. That is what keeps it one host and one install.</p>
+
+    <h3>Can I connect QGIS straight to the PostgreSQL database?</h3>
+    <p>No, deliberately, for everyone. Every read and write goes through the API doors, because the doors are where everything you run Talus for lives: sharing and authorization, audit and editor tracking, conflict detection, attachments, and backup coherence. A raw connection string would bypass all of it. QGIS connects through the standard doors instead, and attachments are managed objects, access-controlled, visible in the web and in Pro, and backed up with the database, rather than a path column pointing at a file share.</p>
+
+    <h3 id="sql-sources">Can Talus read tables from our work-order, permit, or billing databases?</h3>
+    <p>Yes, as a read-only copy that Talus refreshes on a schedule. A publisher adds a connection to the database, SQL Server, PostgreSQL, MySQL, or MariaDB today, with a read-only login from your DBA, picks a table or view, chooses the columns and, if the rows have coordinates, how to place them (addresses are geocoded as a separate step), and sets a nightly or interval refresh. The copy is an ordinary Talus table or point layer: it goes on maps and into dashboards and reports, and it can be shared like anything else. Talus never writes to the source. On PostgreSQL, MySQL, and MariaDB the session it opens is read-only; on SQL Server it only declares read-only intent, which is why the login must be read-only. The password is stored encrypted, shown to no one, and kept out of every log. Connections belong to the person who made them; an administrator sees which hosts are in use and by whom, never the secret.</p>
+    <p>Deliberately absent: a WHERE clause, free-text SQL, transforms, and merges across sources. Your DBA's view is the filter, which is also where the permission lives. For a work-order, asset-management, or utility-billing table that is the whole workflow; for an SDE point feature class, point Talus at a view that exposes the coordinates as two columns. Oracle is on the list but not yet available, and Windows authentication to SQL Server is not yet supported, so ask for a SQL login. If your shop cannot issue one, tell us; that moves it up the list.</p>
+    <h3>Can I keep my token-secured Esri geocoder? Does adding it log me into ArcGIS?</h3>
+    <p>Yes, and no. Add it as an ArcGIS GeocodeServer locator and paste a token you generated in your own ArcGIS Online or Location Platform organization. There is no ArcGIS sign-in and no OAuth prompt. The token is stored write-only and encrypted at rest, never echoed back, and validated with a Test button. Talus never brokers an Esri sign-in and never sees your Esri password. For credit-consuming services, batch geocoding shows a credit estimate and requires an explicit acknowledgement before spending. Zero-credit alternatives ship in the box: an internal geocoder over your own address points, or self-hosted Nominatim.</p>
+
+    <h3>Dashboards, scheduled reports, story maps?</h3>
+    <p>Yes. All three are Talus+ modules: operational dashboards with indicators, charts, and filtered map widgets with cross-filtering; scheduled and per-feature PDF reports with delivery to email or webhook targets; and story maps. The zero-build free path for per-feature documents is QGIS Atlas over the OGC door, a power-user recipe rather than a placeholder.</p>
+
+    <h3 id="geolibre">Can we use GeoLibre with Talus?</h3>
+    <p>Yes, read-only, today, with nothing to configure. GeoLibre is an open-source GIS that runs in a browser tab, on the desktop, and on a phone. It hosts no data and has no accounts, and its own documentation recommends pairing it with a server that provides those. In the GeoLibre desktop app, choose Add Data, then OGC API Features, and paste the portal's <code>/api/v1/ogc</code> landing page: every publicly shared layer appears and pages through in full. Or choose Add Data, then ArcGIS layer, and paste one public layer's FeatureServer address. Use the desktop app rather than the hosted web app; Talus keeps its doors closed to third-party browser origins on purpose. A private layer opens from a file: download it as a GeoPackage first.</p>
+    <p>Editing from GeoLibre does not work, and the reason is authentication, not capability. GeoLibre writes edits with the same Esri applyEdits call that ArcGIS Pro uses on Talus, but its ArcGIS client can only sign in with a token in the URL, and Talus takes tokens only in a header, by decision: QGIS and Pro never needed a URL token, and a token in a URL leaks into browser history and proxy logs. On an editing-enabled public layer GeoLibre will offer the save, Talus refuses it, and nothing is written. The longer entry is on the <a href="/compatibility/#geolibre">Compatibility</a> page.</p>
+
+    <h3>We're moving data out of ArcGIS, or anything else, into Talus. What should we do first?</h3>
+    <p>Back it up where it is. Export the geodatabase or the service, keep the copy somewhere Talus cannot touch, and leave the original system running until you have checked what came across. Imports are copies and the source is never modified, but the original is your way back.</p>
+
+    <h3>I'm importing a CSV. What happens to my ZIP codes, FIPS codes, and parcel IDs?</h3>
+    <p>Leading zeros are preserved. A CSV carries no type information, so Talus reads the header and the first 200 rows and picks a type per column. A value with a leading zero before more digits is treated as an identifier, not a number, so the whole column comes in as text and the value is stored exactly as written. Dates and true/false are not guessed; they arrive as text. If you want particular types, build the layer's fields first and import into that existing layer rather than letting the import create one.</p>
+
+    <h2 id="ai-helper">What does the AI helper actually do, and what does it see? (Talus+)</h2>
+
+    <h3>What it is</h3>
+    <p>The Talus Helper answers questions from the product documentation and, for administrators, from the deployment's own health state. It is informational: it explains, cites, and suggests steps. It never runs anything. No restarts, no configuration edits, no data changes.</p>
+
+    <h3>Docs mode</h3>
+    <p>You ask; the answer comes from the Talus documentation only, with the documents and sections it used, suggested next steps, and, when the docs do not cover it, a short summary you can send to support. Every answer carries a provenance footer naming the model, prompt version, docs version, and request id. AI is always disclosed, never dressed as a person.</p>
+
+    <h3>Diagnose mode (administrators)</h3>
+    <p>“Why isn't my service working?” The Helper reads a snapshot the portal assembles from what it already records: live checks of the database, sign-in, permissions, storage, and the backup destination; recent warnings and errors, including the last error lines of the database, the sign-in service and the web edge; recent administrative actions; backup, maintenance, and migration state; license status. You see the snapshot before it is sent, section by section, and choose what goes. The answer is a diagnosis, the steps you perform from the runbooks, and a support summary carrying the request id.</p>
+
+    <h3>Where does it run? What leaves my server?</h3>
+    <p>Your portal talks to a small service Talus GIS LLC operates, which talks to the model provider under Talus's own account. What leaves: your question, and in diagnose mode the snapshot sections you approved. What never leaves: your GIS data, or your Talus token in the clear. The person asking is sent as an opaque per-installation pseudonym, not a name. The snapshot sections are different: secrets are removed from them, but user names and host names are kept, because they are what makes a diagnosis useful, so leave a section out if you do not want it sent. What is kept: usage metadata only, meaning counts, timestamps, request ids and, when diagnostics were sent, which sections went and a hash of them. No question text, no answers, no snapshot content, on either side.</p>
+
+    <h3>Do I hold an AI vendor key?</h3>
+    <p>No. You upload the activation file Talus sends you; your server exchanges its one-time code for a Talus-issued token. It is stored encrypted and validated once against a fixed destination that no setting in the product can change. Talus holds the only provider credential. Remove the token and the Helper is off. If your term lapses, the Helper stops and everything else keeps running.</p>
+
+    <h3>Can it run up a bill?</h3>
+    <p>No. Usage counts against an included allowance. You see percent used and pace, never a meter. At the ceiling the AI pauses and we talk. A top-up or a larger allowance is a quote you accept, never an automatic charge. A daily cap stops a runaway in hours.</p>
+
+    <h3>And in Talus Community?</h3>
+    <p>No AI at all, structurally. The AI code is not in the public build; there is no token, no route, and no provider key anywhere in a Community install. An air-gapped Talus+ likewise reports “not available in this environment” and keeps every non-AI module. The documentation is the manual path.</p>
+
+    <h3>Which model?</h3>
+    <p>Currently Claude Haiku. The model is chosen on the Talus side for each operation, so upgrades reach every customer without a product update, which is also why the feature is called the Talus Helper, not after a model.</p>
+
+    <h3>Limits, honestly</h3>
+    <p>It answers from the docs, not the internet, and says so when the docs do not cover a question. In diagnose mode it sees what the portal records plus the last error lines of the database, the sign-in service and the web edge, not their full logs or the host, so some problems still end in “here is what to tell support,” with a request id that lets us pick up exactly where it left off.</p>
+
+    <h2 id="licensing">Licensing: “AGPL? Our policy has questions.”</h2>
+
+    <h3>Does using Talus obligate us to publish anything?</h3>
+    <p>No. AGPL obligations trigger on modifying and distributing or serving the software, not on use. An organization running Talus, even public-facing, has zero disclosure obligations. You almost certainly run GPL-family software already: QGIS and PostGIS are GPL-family.</p>
+
+    <h3>Why AGPL and not permissive?</h3>
+    <p>So the open core stays open. Copyleft means no vendor can absorb Talus into a closed product and sell it back to you. It protects your exit rights.</p>
+
+    <h3>Our procurement policy bans the AGPL outright.</h3>
+    <p>A commercial license for the identical code is available directly from Talus GIS LLC, the single copyright holder, which is what makes dual licensing possible. Same software, different paper.</p>
+
+    <h3>Can our staff modify it?</h3>
+    <p>Yes, freely, for your own use. Only redistributing or offering your modified version to others triggers the share-back clause.</p>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

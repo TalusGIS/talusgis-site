@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GIS for park districts — Talus GIS</title>
+  <meta name="description" content="A park district can run a real GIS with no GIS person: parks, trees, playgrounds, trails, and the crews who maintain them, on one map, free under the AGPL. What you need and what Talus deliberately does not do.">
+  <link rel="canonical" href="https://talusgis.com/for/park-districts/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="GIS for park districts — Talus GIS">
+  <meta property="og:description" content="A park district can run a real GIS with no GIS person: parks, trees, playgrounds, trails, and the crews who maintain them, on one map, free under the AGPL. What you need and what Talus deliberately does not do.">
+  <meta property="og:url" content="https://talusgis.com/for/park-districts/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Who it's for</span>
+    <h1>Park districts</h1>
+    <p class="lede">A park district has more assets per employee than almost any other public body: trees, playgrounds, benches, trails, signs, irrigation, ball fields, shelters. Most districts track them in spreadsheets and in one person's head, because the GIS products that would do better are priced for a city. Talus Community is the complete GIS, free, and it was built for exactly this shape of organization.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2 id="what">What it does for you</h2>
+    <p><strong>One inventory instead of five spreadsheets.</strong> Every park, every tree, every piece of equipment is a point, line, or polygon with the fields you define: species and condition, install date, last inspection, who maintains it. Photos and inspection PDFs attach to the feature itself and travel with it into ArcGIS Pro, QGIS, and the browser. Coded-value domains keep "Fair" from being spelled four ways.</p>
+    <p><strong>Crews collect on their phones.</strong> A publisher generates a field project from a web map in one click; the crew opens a link on the phone and collects with QField, free and open source, photos included. Seasonal staff get a crew credential you can revoke from the portal the day they leave. Talus Field, the Talus+ module, adds a web-first app with offline packs and GNSS metadata for a district that wants more.</p>
+    <p><strong>A public parks map without a project.</strong> Public sharing is off on every fresh install. When a board is ready, an administrator turns it on and shares the parks and trails layers to Public Access; residents get a map with no account, and the Open Data portal publishes the datasets you choose with the metadata to match. Turning it off stops serving all of it immediately.</p>
+    <p><strong>The work-order system stays where it is.</strong> If the district runs one, Talus keeps a read-only, nightly-refreshed copy of its table, so the asset and its open work sit on one map and nobody exports a spreadsheet on Monday.</p>
+
+    <h2 id="need">What you need</h2>
+    <p><strong>One machine.</strong> A virtual machine on the Windows server the district already has, under Hyper-V, or a small Linux server with Docker. Four vCPUs and 8 GB serve a small organization comfortably; the <a href="/how-it-works/#where-it-runs">where it runs</a> section says how each option works.</p>
+    <p><strong>One person and an evening.</strong> Whoever manages the district's IT contractor is the right person. The install runbook ships in the repository and brings the whole stack up with one script; there is no publish step, no separate map server, and no license server. Backups run on a schedule to a destination you name, and the restore drill is one script that proves a backup restores, not a hope.</p>
+    <p><strong>Data you probably already have.</strong> A shapefile of park boundaries from the county, a spreadsheet of trees with coordinates, an aerial from the state: Talus imports Shapefile, GeoPackage, GeoJSON, CSV with coordinates, KML and KMZ, and GeoTIFF, JPEG 2000, or ERDAS IMG rasters.</p>
+
+    <h2 id="not">What it deliberately does not do</h2>
+    <p><strong>It is not a reservation, registration, or point-of-sale system</strong>, and it will not become one. <strong>It is not a work-order system.</strong> Work-order and asset-management systems are integration points: Talus records what is on the ground and reads their tables; it does not assign work or route crews. <strong>No 3D, no routing, no heavy imagery analytics</strong>: shedding those is what keeps Talus one host and one install. <strong>No certifications yet</strong>; if your board needs a SOC 2 report, Talus cannot give it one today, and says so.</p>
+    <div class="callout">
+      <p>Talus Community costs nothing, stays free under the AGPL, and asks a district that runs it to publish nothing. Talus+ adds support from the people who build it, dashboards, scheduled reports, story maps, and Talus Field, on one flat, public price. Stop paying and everything installed keeps working.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <h2>See for yourself.</h2>
+    <p class="lede">Bring the stack up on one machine, import the parks layer, and put a crew on it with QField this week.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/TalusGIS/talus/releases">Get Talus Community</a>
+      <a class="btn btn-secondary" href="/compatibility/#qgis">QField and QGIS</a>
+      <a class="btn btn-secondary" href="/contact/">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

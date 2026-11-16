@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How it works — Talus GIS</title>
+  <meta name="description" content="How specific Talus capabilities work: what each does, what you need, and what it deliberately does not do.">
+  <link rel="canonical" href="https://talusgis.com/how-it-works/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How it works — Talus GIS">
+  <meta property="og:description" content="How specific Talus capabilities work: what each does, what you need, and what it deliberately does not do.">
+  <meta property="og:url" content="https://talusgis.com/how-it-works/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/" aria-current="page">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h1>The parts that deserve a page.</h1>
+    <p class="lede">Most of Talus fits in a bullet on the <a href="/">home page</a>. Some capabilities carry a promise you should understand before you trust them. Each page here follows the same three headings: what it does, what you need, and what it deliberately does not do.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2 id="where-it-runs">Where it runs</h2>
+    <p>Talus runs on a Linux virtual machine: under Hyper-V on your Windows server, under VMware or Proxmox, or directly on any Linux server with Docker. It is the same product in each case, with the same data, the same upgrades, and the same backups. On Windows, VMware, or Proxmox you create one Ubuntu virtual machine (the install guide has the page for it, about twenty minutes once) and the installer does the rest in under three minutes; you never need to work in Linux beyond the commands in the guide. On a Linux server one command brings up the whole stack.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cards">
+      <div class="card"><h3><a href="/how-it-works/databases/">Your databases</a></h3>
+        <p>A read-only, scheduled copy of a table or view from SQL Server, PostgreSQL, MySQL, or MariaDB: work orders, permits, billing, an SDE geodatabase. Talus never writes back, your DBA's view is the filter, and a failed refresh keeps the last good copy.</p></div>
+    </div>
+    <p>More pages arrive as capabilities earn them. If one you care about is missing, <a href="/contact/">ask</a>; the answer may already be in the <a href="/faq/">FAQ</a>.</p>
+    <p>Looking for your kind of organization rather than a capability? <a href="/for/">Who it's for</a> has a page each for park districts, fire districts, rural counties, conservancies, consultants, and organizations outside the US.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Talus for consultants and small GIS firms — Talus GIS</title>
+  <meta name="description" content="An engineering or planning firm that runs GIS for several small clients can deploy Talus per client with no license line, and sell its own services on top. What the AGPL asks of you, what you need, and what Talus deliberately does not do.">
+  <link rel="canonical" href="https://talusgis.com/for/consultants/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Talus for consultants and small GIS firms — Talus GIS">
+  <meta property="og:description" content="An engineering or planning firm that runs GIS for several small clients can deploy Talus per client with no license line, and sell its own services on top. What the AGPL asks of you, what you need, and what Talus deliberately does not do.">
+  <meta property="og:url" content="https://talusgis.com/for/consultants/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Who it's for</span>
+    <h1>Consultants who run GIS for small organizations</h1>
+    <p class="lede">Many small organizations get their GIS from an engineering firm, a planning consultancy, or a one-person shop that already knows PostGIS. Those firms assemble an open-source stack by hand for each client, and the integration is where their hours go. Talus is that stack, already integrated, installed per client in an afternoon, with no license line to pass through.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2 id="what">What it does for you</h2>
+    <p><strong>One install per client, no per-client license.</strong> Talus Community is free under the AGPL for every client you deploy it for: the complete portal, hosted layers, web maps, interop doors, backups, and the invariant suite. Install it on the client's host or on a server you run for them; it is the same installer and the same product either way, and moving a client from your server to theirs later is a restore, not a migration.</p>
+    <p><strong>Your tools already connect.</strong> One connection file puts a client's whole catalog into ArcGIS Pro or QGIS. The documented /api/v1 with scoped service-account tokens lets you script loads and checks from your own environment. Read-only copies of the client's work-order, permit, or billing tables refresh nightly without an ETL project.</p>
+    <p><strong>Fewer midnight calls.</strong> Upgrades are versioned releases you pull, each rehearsed on a test server, with every image pinned by digest. Backups go to a destination you name, encrypted to keys you hold once you add them, and the restore drill is one script whose last result shows on the admin pages. Nothing phones home, and the short list of outbound connections is in the security overview, each one an administrator's to switch off.</p>
+    <p><strong>Talus+ for the firm, or for the client.</strong> Support from the people who build Talus, plus dashboards, scheduled reports, story maps, and Talus Field, on one flat, public price per deployment. Quote it through, or carry it yourself; either way the price is the published price.</p>
+
+    <h2 id="need">What you need</h2>
+    <p><strong>What the AGPL asks of you, plainly.</strong> Run Talus unmodified for a client and it asks nothing: using the software, even to serve a client over a network, creates no obligation to publish anything. Modify it and serve your modified version to others, and the people who use it are entitled to your changes. If a client's procurement bans the AGPL outright, a commercial license for the identical code is available from Talus GIS LLC.</p>
+    <p><strong>The name.</strong> Say that your service runs on Talus GIS; that is true and welcome. The name and mark belong to Talus GIS LLC, so your service is yours by your name, built on Talus.</p>
+    <p><strong>A host per client.</strong> A VM on the client's server, a Linux host with Docker, or a cloud server you operate; four vCPUs and 8 GB per deployment is comfortable for a small organization. Each client is its own install with its own data and its own backups.</p>
+
+    <h2 id="not">What it deliberately does not do</h2>
+    <p><strong>There is no reseller program, partner tier, or white-label edition today.</strong> If you want one, write to us and say what it would need to be; the answer will be a conversation, not a brochure. <strong>Talus is not multi-tenant.</strong> One install serves one organization; serving several clients from one portal is deliberately not supported, because the authorization model, the backups, and the audit trail are per organization. <strong>No feature grid against ArcGIS</strong>: Talus wins on operational simplicity, cost of ownership, and trust, and loses on the exotic 20% on purpose. <strong>Field Maps and Survey123 cannot be pointed at Talus</strong>; QField and Talus Field are the field path.</p>
+    <div class="callout">
+      <p>A firm that deploys Talus for its clients is also the "someone answerable" those clients want locally. Talus GIS LLC stays answerable for the product.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <h2>See for yourself.</h2>
+    <p class="lede">Bring the stack up on one machine, load a client's data, and open it in Pro and QGIS from one connection file.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/TalusGIS/talus/releases">Get Talus Community</a>
+      <a class="btn btn-secondary" href="/editions/">Editions and licensing</a>
+      <a class="btn btn-secondary" href="/contact/">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How it works: your databases — Talus GIS</title>
+  <meta name="description" content="How Talus keeps a read-only, scheduled copy of a table from the SQL databases other systems own, what you need, and what it deliberately does not do.">
+  <link rel="canonical" href="https://talusgis.com/how-it-works/databases/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How it works: your databases — Talus GIS">
+  <meta property="og:description" content="How Talus keeps a read-only, scheduled copy of a table from the SQL databases other systems own, what you need, and what it deliberately does not do.">
+  <meta property="og:url" content="https://talusgis.com/how-it-works/databases/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/" aria-current="page">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h1>Your databases</h1>
+    <p class="lede">Work orders, permits, utility billing, and SDE geodatabases: the systems an enterprise already runs keep their data in RDBMS databases. Talus can hold a read-only copy of a table or view from one of them and refresh it on a schedule, so the asset and its open work sit on one map without anyone exporting a spreadsheet on Monday morning.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2 id="what">What it does</h2>
+    <p>A publisher adds a connection to SQL Server, PostgreSQL, MySQL, or MariaDB, tests it, and picks a table or view. The wizard shows what identifies a row, lets them choose the columns, and asks how rows are placed: not at all for a plain table, from two coordinate columns, or, for an address column, as a plain table you geocode as a separate step; that point layer is a copy made then and does not refresh with the pull. They set a refresh, nightly at an hour of their choosing or every few hours, and run it. The result is an ordinary Talus table or point layer that goes on maps and into dashboards and reports and can be shared like anything else in the catalog.</p>
+    <p>A refresh writes only what changed. Rows that are the same cost nothing; a changed row is updated in place and keeps its Talus id, so bookmarks, relates, and selections survive; rows gone from the source are removed from the copy. A table with a primary key or a unique index is matched by that key, OBJECTID included. A view with no key is matched by the content of each row, so it works too.</p>
+    <p>When a refresh fails, because the server is down, a column was renamed, or the login was revoked, the last good copy stays exactly as it was and the pull shows a stale badge with the plain-language reason. The schedule keeps trying at its next slot. While a source is attached the copy is locked against editing inside Talus, enforced by the database rather than a checkbox; detaching the pull turns the copy into an ordinary editable table and ends the refresh.</p>
+
+    <h2 id="need">What you need</h2>
+    <p><strong>The host, port, database name, and TLS requirement</strong>; if the server presents a certificate from your own certificate authority, the CA bundle pastes into the connection. <strong>The server's local time zone</strong>, for timestamp columns that carry none.</p>
+    <p><strong>A Talus install inside your network.</strong> The Talus server has to reach the database server directly. Use <strong>a read-only SQL login</strong>, the same kind of viewer account most shops already keep for public-facing database or SDE access. Talus stores the password encrypted, shows it to no one afterwards, and keeps it out of every log.</p>
+    <p>Connections belong to the person who made them. Another publisher cannot see, use, or remove them. An administrator's overview lists every connection with its host and owner, never the secret, and can remove one for oversight. If the owner is disabled or set to a role below publisher, their pulls stop refreshing and say why; if a pulled layer is transferred to someone else, it is detached at that moment, because a personal credential does not follow a layer to another person.</p>
+
+    <h2 id="not">What it deliberately does not do</h2>
+    <p><strong>It never writes to your database.</strong> The only statements it issues are SELECTs against the table or view you chose. On PostgreSQL, MySQL, and MariaDB the session is also set read-only; SQL Server only declares read-only intent, so give Talus a login that can only read. <strong>There is no WHERE clause and no free-text SQL.</strong> If you want a subset, your DBA creates a view; the view is the filter, and it is also where the permission lives. <strong>It is not an ETL tool.</strong> A column list, a type mapping, and a coordinate pair are the whole shape of a pull; transforms, merges across sources, and scripting are not coming. <strong>It does not read an SDE shape column directly</strong> yet: expose the coordinates as two columns in a view. Lines and polygons are a later step. Classes stored as SDEBINARY or ST_GEOMETRY cannot be read outside ArcGIS by anything; Esri's Migrate Storage tool converts them. <strong>Not yet:</strong> Oracle, and Windows authentication to SQL Server. Ask your DBA for a SQL login, and if your shop cannot issue one, tell us.</p>
+
+    <div class="callout">
+      <p>Talus also refuses to connect to its own services, loopback, and cloud metadata addresses, by name and by resolved address, so the connection form can never become a door into the Talus stack itself.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <h2>See for yourself.</h2>
+    <p class="lede">Bring the stack up on one machine inside your network, add a read-only login, and pull one view.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/TalusGIS/talus/releases">Get Talus Community</a>
+      <a class="btn btn-secondary" href="/compatibility/#databases">Compatibility</a>
+      <a class="btn btn-secondary" href="/contact/">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compatibility — Talus GIS</title>
+  <meta name="description" content="How Talus works with the tools a GIS shop already has: ArcGIS Pro, QGIS, QField, Google Earth, GeoLibre, your identity provider, your geocoder, your backup target, and the standards that tie them together. Where something does not work, it is named.">
+  <link rel="canonical" href="https://talusgis.com/compatibility/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Compatibility — Talus GIS">
+  <meta property="og:description" content="Desktop GIS, field apps, viewers, standards, identity, geocoding, backups, and migration paths. What works with Talus today, how, and what does not.">
+  <meta property="og:url" content="https://talusgis.com/compatibility/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/" aria-current="page">Compatibility</a></li>
+      <li><a href="/how-it-works/">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">What Talus works with</span>
+    <h1>Compatibility</h1>
+    <p class="lede">Talus is the server of GIS data: vectors, rasters, and tables. The tools your staff already use connect to it through standard doors, and this page outlines some common GIS apps, whether a limit exists, and why.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap prose">
+    <p class="small muted">Verified 17 September 2026 against the current Talus release and the named versions of each tool. Tools change; <a href="/contact/">tell us</a> if a claim here has gone stale.</p>
+
+    <h2>The model in one paragraph</h2>
+    <p>Every read and write goes through the API. Talus uses standards desktop tools already speak: OGC API Features, the Esri FeatureServer dialect, WMTS for imagery, WCS for raster values, vector tiles for the browser, and DCAT-US for open-data harvesters. A user signs in once with an access token that is theirs to revoke; the same sharing rules, audit trail, and conflict detection apply whether an edit arrives from a browser, ArcGIS Pro, QGIS, or a phone. There is deliberately no direct database connection.</p>
+
+    <h2 id="esri">Esri</h2>
+
+    <h3 id="arcgis-pro">ArcGIS Pro</h3>
+    <p><strong>Read and edit, today.</strong> Talus hands out a connection file; import it once per computer and every layer you can see in Talus is in Pro's Catalog pane, and layers shared to you later appear automatically. Editing goes through the Esri FeatureServer door with the same behaviour Pro expects from an ArcGIS Server: paste a layer's address, edit, save. Feature attachments (photos and documents) work natively in Pro with no setup. Imagery is served as WMTS. Bulk loads use Pro's own Append tool.</p>
+    <p><strong>Limits, plainly.</strong> Pro will not render Talus WCS raster values, so imagery is viewed through WMTS. Pro's OGC API Features path is read-only. Verified against Pro 3.7.</p>
+
+    <h3 id="esri-field-apps">ArcGIS Field Maps and Survey123</h3>
+    <p><strong>Not compatible, and nothing Talus can do about it.</strong> Both apps sign in to an ArcGIS Online or ArcGIS Enterprise portal and only open the web maps and surveys that live there; they cannot be pointed at any other server. What transfers is the work, not the app: the forms, coded domains, required fields, and offline areas you built there map onto Talus Field, or onto QField in Talus Community. An external GNSS receiver works with Talus Field when it becomes the phone's location, or on Android when Talus Field reads it over Bluetooth; on an iPhone, a receiver that feeds only native apps does not reach it. Talus records capture-time provenance fields (fix quality, accuracy, receiver) on the feature when the receiver supplies them.</p>
+
+    <h3 id="arcgis-online">Moving from ArcGIS Online or ArcGIS Enterprise</h3>
+    <p>Export each hosted layer as GeoPackage or Shapefile and import it; attachments come in through Pro's Append tool or the attachment chute. Services you cannot move yet stay referenced live from the catalog. Dashboards, story maps, and field forms are rebuilt in the Talus+ modules rather than migrated, because the formats are Esri's. The <a href="/faq/#capabilities">FAQ</a> covers what Talus deliberately does not replace.</p>
+
+    <h2 id="qgis-qfield">QGIS and QField</h2>
+
+    <h3 id="qgis">QGIS</h3>
+    <p><strong>Read and edit, today.</strong> Talus hands out a connection file; import it once per computer and QGIS gets an OGC API Features connection that browses the whole catalog, so adding a layer is expand-and-add, and layers shared to you later appear automatically. Editing goes through the Esri FeatureServer door, one layer's service link at a time; the attachment widget reads and writes photos on features; imagery arrives as WMTS and raster values as WCS. A field project authored in QGIS can be uploaded to the portal for distribution. Verified against QGIS 3.44.</p>
+
+    <h3 id="qfield">QField</h3>
+    <p><strong>Works today, in Talus Community.</strong> A publisher generates a field project from a web map in one click, or uploads one authored in QGIS. The project carries a crew credential that can be revoked from the portal, and it is distributed as a link the phone opens directly. Collection and photos round-trip into the same layers and attachments everything else uses. The recipe is in <a href="https://github.com/TalusGIS/talus/blob/main/docs/connect-desktop.md">docs/connect-desktop.md</a>. QField is the open, proven baseline; it is not a placeholder for Talus Field.</p>
+
+    <h2 id="standalone">Stand-alone products</h2>
+
+    <h3 id="google-earth">Google Earth desktop</h3>
+    <p><strong>A migration path for the KMZ.</strong> Google Earth desktop's discontinuation leaves years of KML and KMZ with nowhere to live. Talus imports both: folders become a column on the layer so your organization survives the move, attributes come in typed when the file declares a schema, and descriptions are kept as text. Overlays and network links are reported in the import summary as not imported, and a linked file is never fetched. Talus is a 2D map with attributes; for the globe itself, point people at Google Earth on the web, or at GeoLibre (below).</p>
+
+    <h3 id="geolibre">GeoLibre</h3>
+    <p><strong>Read-only, today, with nothing to configure.</strong> GeoLibre is an open-source GIS that runs in a browser tab, on the desktop, and on a phone. It hosts no data and has no accounts, and its own documentation recommends pairing it with a server that provides those. In the GeoLibre desktop app, choose Add Data, then OGC API Features, and paste the portal's <code>/api/v1/ogc</code> landing page: every publicly shared layer appears and pages through in full. Or choose Add Data, then ArcGIS layer, and paste a public layer's FeatureServer address. Use the desktop app rather than the hosted web app; Talus keeps its doors closed to third-party browser origins on purpose. A private layer opens from a file, downloaded as a GeoPackage first.</p>
+    <p><strong>Editing from GeoLibre does not work, and the reason is authentication, not capability.</strong> GeoLibre writes edits with the same Esri applyEdits call ArcGIS Pro uses on Talus, but its ArcGIS client can only sign in with a token placed in the URL, and Talus accepts tokens only in a request header, by decision: QGIS and Pro never needed a URL token, and a token in a URL leaks into browser history and proxy logs. On an editing-enabled public layer GeoLibre offers the save, Talus refuses it, and nothing is written. Where GeoLibre is the better tool, use it: analysis, print layouts, a 3D globe, viewing on a phone. An organization that runs Talus gets a capable open-source client for nothing, today, for reading.</p>
+
+    <h2 id="everything-else">Standards, data, and the rest of your stack</h2>
+
+    <h3 id="standards">Standards, scripts, and open data</h3>
+    <p>Served by Talus: OGC API Features (plain JSON, paged), WMTS, WCS, the Esri FeatureServer dialect, vector tiles, and DCAT-US metadata for open-data harvesters, all documented in <a href="https://github.com/TalusGIS/talus/blob/main/docs/api-guide.md">docs/api-guide.md</a>. Python, R, GDAL and OGR, or anything that speaks HTTP connects with a personal access token, and unattended jobs use scoped service accounts. Consumed by Talus: a live ArcGIS feature or image service, a GeoJSON feed, or an XYZ tile layer can be referenced from the catalog without copying it, so a state parcel service or a regional aerial stays where it is.</p>
+
+    <h3 id="formats">Data in and out</h3>
+    <p>In: zipped Shapefile, GeoPackage, GeoJSON, CSV with coordinates, GeoParquet, KML and KMZ, and GeoTIFF, JPEG 2000, and ERDAS IMG rasters, which convert to cloud-optimized GeoTIFF. Out: CSV, GeoJSON, Shapefile, and GeoPackage with reprojection, plus raster exports. Your data is yours to take elsewhere, in the format the next tool reads.</p>
+    <p><strong>Limit:</strong> File Geodatabase is not accepted. Export it from Pro as GeoPackage or Shapefile first, and every field comes across; picklists are bound to a domain in Talus, and attachments load with Pro's Append tool.</p>
+    <p id="databases"><strong>From a database you already run:</strong> a publisher can keep a read-only copy of a table or view from SQL Server, PostgreSQL, MySQL, or MariaDB in Talus, refreshed nightly or on an interval, with points built from two coordinate columns, or as a table whose addresses you geocode afterwards (that point layer is a copy, not refreshed with the pull). Talus connects with a read-only login your DBA issues and never writes to the source; on PostgreSQL, MySQL, and MariaDB the session is read-only as well. There is no WHERE clause and no free-text SQL on purpose: if you want a subset, your DBA's view is the filter. A refresh writes only the rows that changed, a failed refresh keeps the last good copy and says why, and the copy stays locked against editing in Talus while its source is attached. SDE point feature classes come across through a view that exposes their coordinates; Oracle is listed but not yet available. The full page: <a href="/how-it-works/databases/">How it works: your databases</a>.</p>
+
+    <h3 id="identity">Your identity provider</h3>
+    <p>Staff sign in through the organization's existing provider, any SAML or OIDC identity provider, on one branded sign-in page. Entra ID is the worked example in the runbook; Okta, Google Workspace, ADFS, and Ping follow the same steps. Local accounts remain for a crew without a directory entry. Multi-factor is built in; the runbook shows how to require it, administrators first.</p>
+
+    <h3 id="geocoding">Your geocoder</h3>
+    <p>A new install ships with the public OpenStreetMap geocoder switched on, which an administrator can remove. Three more kinds are configured by an administrator: a self-hosted Nominatim; the Esri World Geocoder using a token you generated in your own ArcGIS organization, stored write-only and never echoed back; and an internal locator over your own address points, which costs nothing and stays air-gapped. Batch geocoding shows an estimate before spending anyone's credits.</p>
+
+    <h3 id="backups">Your backup target</h3>
+    <p>Backups are written to the host or to any S3-compatible object store you name, with optional encryption to keys only you hold, so an existing Backblaze, Wasabi, MinIO, or AWS bucket works as the off-host copy. Restore is rehearsed by a drill script, not assumed, and the admin pages show when it last passed.</p>
+
+    <h3 id="asset-management">Asset management and work orders</h3>
+    <p>Work-order and asset-management systems are integration points, not features. Talus records what is on the ground and what happened to it; the work-order system reads and writes through the API with a service account. Talus will not assign work, route crews, or manage tickets, and says so in its non-goals. The other direction is covered too: the work-order system's own tables can be kept in Talus as a read-only, nightly-refreshed copy, so crews see the asset and its open work on one map (<a href="#databases">Data in and out</a>).</p>
+
+    <div class="callout">
+      <p><strong>Not on this page, by design.</strong> Business-intelligence tools, CAD, 3D scene viewers, routing engines, and utility-network products. Talus exports data those tools read; it does not try to be them. The reasoning is on <a href="/why-talus/">Why Talus?</a> and in the <a href="/faq/#capabilities">FAQ</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

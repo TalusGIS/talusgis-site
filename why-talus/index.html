@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why Talus? — Talus GIS</title>
+  <meta name="description" content="The honest objections to self-hosted open-source GIS, and what Talus does about each one, with the receipt.">
+  <link rel="canonical" href="https://talusgis.com/why-talus/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Why Talus? — Talus GIS">
+  <meta property="og:description" content="Self-hosting usually brings back the complexity you were trying to leave. Here is why Talus is the exception, claim by claim.">
+  <meta property="og:url" content="https://talusgis.com/why-talus/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/" aria-current="page">Why Talus?</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Why Talus?</span>
+    <h1>“Open-source GIS is too hard.”</h1>
+    <p class="lede">That is the honest default view of open-source GIS, and it is usually right. Assembling your own stack moves the cost from the license line to setup and maintenance. Talus exists to be the exception, and each claim below comes with receipts.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="pairs">
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“It will take weeks to stand up, and someone who’s an open-source specialist to do it.”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>One host with Docker. One installer script brings up the whole stack from one compose file: portal, database, identity, authorization, tiles, and the TLS edge.</p>
+          <span class="receipt"><b>Receipt:</b> 2 minutes 36 seconds from a clean machine to a healthy stack on the shipped installer, with zero hand holding.</span></div>
+      </div>
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“Things break at the integration points.”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>There are no integration points to break. Talus is one product with one configuration, not a bundle of projects glued together. The portal is the coherence layer: every surface, including QGIS and ArcGIS Pro, goes through one authorization-gated API.</p>
+          <span class="receipt"><b>Receipt:</b> no publish step, no slot pools, no separate map server to babysit. A layer exists the moment you create it, everywhere.</span></div>
+      </div>
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“Upgrades on open-source stuff are a nightmare.”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>An upgrade is a versioned release you pull, not a project you plan. Every container image is pinned by content digest, migrations run in order on their own, and every release is rehearsed on a test server, so it never depends on anything hand-tuned on our machines.</p>
+          <span class="receipt"><b>Receipt:</b> the upgrade runbook and the restore runbook ship in the repository, and both are rehearsed.</span></div>
+      </div>
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“Open source means there is nobody to call.”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>Talus GIS LLC builds it, maintains it, and takes responsibility for it. Talus Community is free and stays free under the AGPL. Talus+ adds support, the paid modules, and the AI assists, on legible, predictable pricing.</p>
+          <span class="receipt"><b>Receipt:</b> stop paying if you want, and you keep everything installed, forever. There is no kill switch and no license server that can turn your GIS off.</span></div>
+      </div>
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“How can I host open source GIS in the cloud?”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>Run Talus on any cloud server with Docker, using the same installer as everyone else: a Linux virtual machine of four vCPUs and 8 GB at whatever provider you already use. Nothing about a cloud copy is special, and nothing on it is shared with anyone else.</p>
+          <span class="receipt"><b>Receipt:</b> the <a href="/how-it-works/#where-it-runs">where it runs</a> section lists the options. Your backups can be encrypted to a key only you hold, and moving between a cloud server and your own is a restore, not a migration.</span></div>
+      </div>
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“But can it handle our data?”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>Validated against real data: 12,000+ signs, over 300,000 address points, 35,000 street segments, a 308,000-polygon county parcel layer, and orthoimagery. Bulk import moves layers of that size through the product doors on flat memory, and the photos and documents attached to features ride along as managed objects: access-controlled, visible in the web portal, ArcGIS Pro, and QGIS, and backed up with the database.</p>
+          <span class="receipt"><b>Receipt:</b> a 300,000+ feature parcel layer on four vCPUs serves roughly 150 named users at typical duty cycles. Adding CPU raises that ceiling.</span></div>
+      </div>
+      <div class="pair">
+        <div class="they"><span class="tag">The question</span><p>“Is it secure?”</p></div>
+        <div class="us"><span class="tag">Talus</span><p>Standards-based sign-in, fine-grained authorization that fails closed, and an audit trail of every change to a record, with actor attribution. A negative-test suite ships in the repository so you can prove deny-by-default on your own install rather than take our word for it.</p>
+          <span class="receipt"><b>In practice:</b> TLS everywhere out of the box, with certificates obtained and renewed automatically, or issued from a private CA for air-gapped sites. Stored third-party credentials are encrypted at rest, access tokens are kept only as hashes, and backups can be encrypted client-side to keys the server never holds. Every new data path gets a security review and negative tests, every change must pass CI scanners that fail on high and critical findings that have a fix, and every release ships a software bill of materials with digest-pinned images.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tint">
+  <div class="wrap">
+    <h2>See for yourself.</h2>
+    <p class="lede">Download the release, read the installer and the compose file, and bring the stack up on one machine. Then compare editions when you know it fits.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/TalusGIS/talus/releases">Get Talus Community</a>
+      <a class="btn btn-secondary" href="/editions/">Compare editions</a>
+      <a class="btn btn-secondary" href="/contact/">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

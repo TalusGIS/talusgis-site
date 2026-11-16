@@ -1,0 +1,22 @@
+# Talus GIS
+
+> Talus GIS is an open-source, self-hosted GIS platform that replaces ArcGIS Enterprise for organizations that don't need exotic features (no Utility Network, Parcel Fabric, 3D, or heavy imagery). One install, upgrades tested before they ship, and a company that supports it. Two editions: Talus Community (the complete GIS, free under the AGPLv3, no AI) and Talus+ (the one paid tier: support, the paid modules, and the AI assists). Either edition runs air-gapped. Made by Talus GIS LLC.
+
+Positioning: operational simplicity, total cost of ownership, and trust. Not feature parity with ArcGIS.
+
+## Pages
+
+- [Home](https://talusgis.com/): what Talus is and who it is for
+- [Why Talus?](https://talusgis.com/why-talus/): the honest objections to self-hosted open-source GIS, and what Talus does about each, with the receipt
+- [How Talus is built](https://talusgis.com/how-its-built/): AI as the implementer, GIS professionals as the decision-makers, the process written down
+- [Editions](https://talusgis.com/editions/): Talus Community vs Talus+; stop paying and keep everything installed
+- [Compatibility](https://talusgis.com/compatibility/): ArcGIS Pro, QGIS, QField, Google Earth, GeoLibre, identity providers, geocoders, backups, standards; what does not work is named
+- [How it works](https://talusgis.com/how-it-works/): one page per capability — what it does, what you need, what it deliberately does not do
+- [Who it's for](https://talusgis.com/for/): one page each for park districts, fire protection districts, rural counties, conservancies and non-profits, consultants and small GIS firms, and organizations outside the US — what Talus does for each, what you need, what it deliberately does not do
+- [FAQ](https://talusgis.com/faq/): editing and versioning, security, supply chain, AI, deployment and scale, operations, licensing
+- [Request a quote](https://talusgis.com/quote/): what a one-page Talus+ quote needs
+- [Contact](https://talusgis.com/contact/): info@ (sales and general), support@, security@ — each one reaching a person
+
+## Source
+
+- [GitHub — TalusGIS/talus](https://github.com/TalusGIS/talus): the source, releases, and SBOMs (support and bug reports are by email: see Contact)

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Talus is built — Talus GIS</title>
+  <meta name="description" content="Talus GIS is developed with AI as the implementer, directed by a team with over 30 years of GIS experience under a decision-before-code discipline. Here is exactly what that means.">
+  <link rel="canonical" href="https://talusgis.com/how-its-built/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How Talus is built — Talus GIS">
+  <meta property="og:description" content="AI as the implementer, GIS professionals as the decision-makers, and the process written down.">
+  <meta property="og:url" content="https://talusgis.com/how-its-built/">
+  <meta property="og:image" content="https://talusgis.com/assets/og-image.png">
+  <meta property="og:site_name" content="Talus GIS">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/talus-icon-full.svg" alt="" width="30" height="28">Talus</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/why-talus/">Why Talus?</a></li>
+      <li><a href="/how-its-built/" aria-current="page">How it's built</a></li>
+      <li><a href="/editions/">Editions</a></li>
+      <li><a href="/compatibility/">Compatibility</a></li>
+      <li><a href="/how-it-works/">How it works</a></li>
+      <li><a href="/faq/">FAQ</a></li>
+      <li><a href="/contact/">Contact</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">GitHub</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<div class="page-title">
+  <div class="wrap">
+    <span class="eyebrow">Provenance</span>
+    <h1>How Talus is built</h1>
+    <p class="lede">Talus is developed with AI as the implementer, directed by a team with over 30 years of GIS experience. We disclose that up front and keep disclosing it, because the safeguard is the process, not a secret. This page describes the process.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap prose">
+    <h2>The short version</h2>
+    <p>Every substantive capability in Talus starts as a written design decision. The decision surfaces the forks, the team's domain experts resolve them, and only then is code written. The code is reviewed by a human before it is committed. Every new data path ships with a negative test that proves it denies what it should deny. Every slice gets a security review. That is the whole method, and the rest of this page is detail.</p>
+
+    <h2>What “AI slop” actually is</h2>
+    <p>The complaint open-source maintainers make about AI-generated contributions is rarely about syntax. The code is often fine. What is missing is ownership: no human understands or stands behind the decisions in it, conventions are ignored, and the review burden lands on someone else. The sharpest version of the diagnosis is that the code is well written and the decisions behind it are lacking.</p>
+    <p>Talus is built to be the structural inverse of that. The judgment is front-loaded, written down, and approved by the people accountable for it before any code exists.</p>
+
+    <h2>The process, specifically</h2>
+    <ol>
+      <li><strong>Decision before code.</strong> Each capability produces a design document that lays out the open questions as explicit forks. The team's domain experts resolve them before implementation begins. The decisions are the approved artifact upstream of the code, not something inferred from it afterwards.</li>
+      <li><strong>Domain experts decide; the AI implements.</strong> Architecture and product calls come from more than thirty years of GIS practice in and around local government. The AI is the implementer, not the architect.</li>
+      <li><strong>Human review and gated commits.</strong> Every commit is reviewed and approved by a person who understands it before it is made. Commits, database migrations, and destructive operations sit behind explicit approval gates the agent cannot cross on its own.</li>
+      <li><strong>Small, single-concern slices.</strong> Work is checkpointed in pieces small enough that the reasoning, not just the diff, can actually be reviewed.</li>
+      <li><strong>Enforced conventions.</strong> A written set of architecture invariants, a drift check against the product's positioning at every design decision, and a standing rule that new code reads like the code around it.</li>
+      <li><strong>The why is written down.</strong> Non-obvious choices carry their rationale: fail-closed reasoning, guard ordering, why a door is authenticated-only. This is the bar maintainers say AI contributions miss most.</li>
+      <li><strong>Verify, don't assert.</strong> Outcomes are reproduced and tested, not assumed. The deny-by-default behaviour is proven by a test suite you can run yourself.</li>
+    </ol>
+
+    <h2>Evidence over assertion</h2>
+    <p>The proof is not “trust us.” It is the running system and what ships with it:</p>
+    <ul>
+      <li><strong>The source</strong>, under the AGPL, at <a href="https://github.com/TalusGIS/talus">github.com/TalusGIS/talus</a>. Read the installer script and the compose file before you run them; nothing is fetched but the container images the compose file names.</li>
+      <li><strong>The invariant suite</strong> in <a href="https://github.com/TalusGIS/talus/tree/main/scripts/verify-invariants">scripts/verify-invariants</a>: negative tests that prove anonymous, wrong-user, and forged-identity requests are denied on your own install.</li>
+      <li><strong>The security overview</strong> in <a href="https://github.com/TalusGIS/talus/blob/main/docs/security-overview.md">docs/security-overview.md</a>, including the outbound connections a deployment can make, listed one by one, and the certifications it does not yet hold. Security issues go to <a href="mailto:security@talusgis.com">security@talusgis.com</a>, a mailbox read by a person only.</li>
+      <li><strong>Supply-chain hygiene</strong>: CI scanners that fail on high and critical findings that have a fix, a CycloneDX software bill of materials with every release, container images pinned by content digest, CI actions pinned by commit hash.</li>
+      <li><strong>No untrusted-contributor path.</strong> Talus is maintained in-house by design. Outside pull requests are declined automatically, so the most common real-world open-source compromise, a hijacked contributor, has no ingress.</li>
+    </ul>
+    <p>Judge the result by the working system: fail-closed, audited, and testable on your own hardware, rather than by how it was typed.</p>
+
+    <div class="callout">
+      <p><strong>Where AI shows up in the product itself.</strong> Talus Community contains no AI at all: the code is not in the public build, and there is no token, route, or provider key in a Community install. Talus+ carries the AI assists as an optional module. Every AI answer carries a provenance footer naming the model and prompt version, the assistant explains and suggests but never runs anything, and an air-gapped Talus+ keeps every non-AI module. Details are in the <a href="/faq/#ai-helper">FAQ</a>.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© 2026 Talus GIS LLC. Talus GIS™ is a trademark of Talus GIS LLC.</div>
+    <ul>
+      <li><a href="/for/">Who it's for</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/billing/">Refunds</a></li>
+      <li><a href="https://github.com/TalusGIS/talus">Source</a></li>
+      <li><a href="https://github.com/TalusGIS/talus/blob/main/SECURITY.md">Security</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
