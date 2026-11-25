@@ -87,8 +87,19 @@
     <h3>Does it phone home? Where does our data go?</h3>
     <p id="phones-home">No. There is no telemetry, no update checker, and no license server. A deployment <em>can</em> reach the internet for a short list of things, including certificate renewal, address search, streamed map backgrounds, an off-host backup target, and in Talus+ the AI assists. Two of these are on when you install, because a new portal is more useful with them: a public address search, and street maps that each viewer's browser fetches straight from the publisher, OpenStreetMap by default. An administrator can switch either off, and the rest exist only if you configure them. With those two off and nothing else configured, the server makes no outbound connection and no viewer's browser is sent anywhere but your portal, which you can confirm at your own network layer. The security overview lists them one by one.</p>
 
+    <h2 id="one-person">Talus is one person. What happens if that person stops?</h2>
+    <p>Today Talus GIS is one person: a 25-year GIS practitioner, who directs the work and answers the mail. The plan is to add people as revenue allows. Until then, this is what protects you if that person is unavailable:</p>
+    <ul>
+      <li><strong>Your data stays yours.</strong> Your data stays in PostgreSQL on your own server, cannot be turned off, and continues to function as usual. ArcGIS Pro and QGIS read every layer through the standard doors, so you can save a copy in any format they write.</li>
+      <li><strong>Nothing checks in with us.</strong> There is no license server and no update check. An installed server keeps running whether or not Talus GIS exists.</li>
+      <li><strong>The core is open source.</strong> Under the AGPLv3 you, or anyone you hire, can read the code, fix it and run it for as long as you like.</li>
+      <li><strong>Talus+ keeps working.</strong> When a Talus+ term ends, nothing installed is disabled.</li>
+      <li><strong>The operations are documented.</strong> Installing, upgrading, backing up and restoring each have documentation, so the next person does not start from nothing.</li>
+    </ul>
+    <p>What this cannot cover: if development stopped, new features and security fixes would stop until someone else picked the code up. We would rather you knew that going in.</p>
+
     <h2 id="ai-built">“Talus is AI-built. Isn't that a risk?”</h2>
-    <p>Talus is developed with AI as the implementer, directed by a team with over 30 years of GIS experience under a decision-before-code discipline: every substantive capability gets a written design decision before implementation, a security review, and negative tests for every new data path. “AI slop” is un-owned code. This is the inverse: the judgment is front-loaded and human, the implementation is reviewed, and the verification suite in the repository is the discipline's public face. Judge the result by the running system, which is fail-closed, audited, and testable on your own install. The full account is on <a href="/how-its-built/">How it's built</a>.</p>
+    <p>Talus is developed with AI as the implementer, directed by a 25-year GIS practitioner under a decision-before-code discipline: every substantive capability gets a written design decision before implementation, a security review, and negative tests for every new data path. “AI slop” is un-owned code. This is the inverse: the judgment is front-loaded and human, the implementation is reviewed, and the verification suite in the repository is the discipline's public face. Judge the result by the running system, which is fail-closed, audited, and testable on your own install. The full account is on <a href="/how-its-built/">How it's built</a>.</p>
 
     <h2 id="deployment">Deployment and scale</h2>
 
@@ -176,7 +187,7 @@
     <p>No. Usage counts against an included allowance. You see percent used and pace, never a meter. At the ceiling the AI pauses and we talk. A top-up or a larger allowance is a quote you accept, never an automatic charge. A daily cap stops a runaway in hours.</p>
 
     <h3>And in Talus Community?</h3>
-    <p>No AI at all, structurally. The AI code is not in the public build; there is no token, no route, and no provider key anywhere in a Community install. An air-gapped Talus+ likewise reports “not available in this environment” and keeps every non-AI module. The documentation is the manual path.</p>
+    <p>No AI features at all, structurally. The AI code is not in the public build; there is no token, no route, and no provider key anywhere in a Community install. An air-gapped Talus+ likewise reports “not available in this environment” and keeps every non-AI module. The documentation is the manual path.</p>
 
     <h3>Which model?</h3>
     <p>Currently Claude Haiku. The model is chosen on the Talus side for each operation, so upgrades reach every customer without a product update, which is also why the feature is called the Talus Helper, not after a model.</p>
