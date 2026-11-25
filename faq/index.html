@@ -92,6 +92,9 @@
 
     <h2 id="deployment">Deployment and scale</h2>
 
+    <h3>Can I try it without installing?</h3>
+    <p>Yes. <a href="https://demo.talusgis.com/">demo.talusgis.com</a> is a live Talus Community server with a Florida county's open data on it. Browse the maps without an account, or sign in with the shared login on its front page to edit two practice layers. That login cannot upload data or create layers, so to try Talus with your own data, install it. Edits are erased every night at 3 a.m. Eastern.</p>
+
     <h3>What does it take to run?</h3>
     <p>One host with Docker. One script, <code>scripts/talus-setup.sh</code>, installs the whole stack: portal, database, identity, authorization, tiles, and the TLS edge, where the closed alternative needs several separately installed components. A modest machine of four vCPUs and 8 GB serves a small organization comfortably. Measured at county scale on a 300,000-parcel layer, four vCPUs carry about fifteen simultaneous requests, roughly 150 named users at typical duty cycles. Adding CPU raises that ceiling. Adding RAM does not.</p>
 
